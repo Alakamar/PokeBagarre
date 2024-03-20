@@ -38,7 +38,7 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Test avec Gradle Wrapper
+    - name: Test with Gradle Wrapper
       run: ./gradlew test
 
     - name: Upload Test Results
@@ -47,7 +47,7 @@ jobs:
         name: test-results
         path: build/test-results/test
 
-    - name : Resume des tests
+    - name : Tests summary
       uses : dorny/test-reporter@v1.8.0
       with :
         name : JUNIT test
