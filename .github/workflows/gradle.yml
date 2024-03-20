@@ -38,16 +38,16 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Test avec Gradle Wrapper
+    - name: Test with Gradle Wrapper
       run: ./gradlew test
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: test-results
         path: build/test-results/test
 
-    - name : Resume des tests
+    - name : Summary
       uses : dorny/test-reporter@v1.8.0
       with :
         name : JUNIT test
@@ -65,45 +65,3 @@ jobs:
           minimum_coverage: 10
           fail_below_threshold: false
           publish_only_summary: false
-      
-      # Publish Coverage Job Summary  # Optional
-    - name: Add Coverage Job Summary
-      run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
-          
-      # uploads the coverage-report.md artifact  # Optional
-
-    - name: Upload Code Coverage Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-          name: code-coverage-report-markdown
-          path: "*/coverage-results.md"
-          retention-days: 1  
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-    #   with:
-    #     gradle-version: '8.5'
-    #
-    # - name: Build with Gradle 8.5
-    #   run: gradle build
-
-  #dependency-submission:
-
-    #runs-on: ubuntu-latest
-    #permissions:
-      #contents: write
-
-    #steps:
-    #- uses: actions/checkout@v4
-    #- name: Set up JDK 17
-      #uses: actions/setup-java@v4
-      #with:
-        #java-version: '17'
-        #distribution: 'temurin'
-
-    # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
-    # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
-    #- name: Generate and submit dependency graph
-      #uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
