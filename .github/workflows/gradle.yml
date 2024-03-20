@@ -38,16 +38,16 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Test with Gradle Wrapper
+    - name: Test avec Gradle Wrapper
       run: ./gradlew test
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v2
       with:
         name: test-results
         path: build/test-results/test
 
-    - name : Summary
+    - name : Resume des tests
       uses : dorny/test-reporter@v1.8.0
       with :
         name : JUNIT test
@@ -65,3 +65,16 @@ jobs:
           minimum_coverage: 10
           fail_below_threshold: false
           publish_only_summary: false
+      
+      # Publish Coverage Job Summary  # Optional
+    - name: Add Coverage Job Summary
+      run: echo "${{ steps.jacoco_reporter.outputs.coverageSummary }}" >> $GITHUB_STEP_SUMMARY
+          
+      # uploads the coverage-report.md artifact  # Optional
+
+    - name: Upload Code Coverage Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+          name: code-coverage-report-markdown
+          path: "*/coverage-results.md"
+          retention-days: 1  
